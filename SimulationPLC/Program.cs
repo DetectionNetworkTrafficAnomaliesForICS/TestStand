@@ -1,15 +1,22 @@
-﻿using System;
-using System.Net.Sockets;
-using System.Threading.Tasks;
-using NModbus;
+﻿using System.Net.Sockets;
 using NModbusAsync;
 
 class Program
 {
+    
+    // Устанавливаем флаг, который будет использоваться для определения, когда завершить программу
+    private static bool ShouldExit = false;
+    private static string  ipAddress = "127.0.0.1"; // Replace with the IP address of your Modbus TCP server
+    private static int port = 502; // Modbus TCP default port
+    private static int intervalInSeconds = 5;
+    
     static async Task Main()
     {
-        var ipAddress = "127.0.0.1"; // Replace with the IP address of your Modbus TCP server
-        var port = 502; // Modbus TCP default port
+       
+
+        // Создайте таймер с указанным интервалом и обработчиком события
+        Timer timer = new Timer(PrintMessage, null, 0, intervalInSeconds * 1000);
+
 
         using (var tcpClient = new TcpClient(ipAddress, port))
         {
@@ -34,7 +41,15 @@ class Program
             }
         }
     }
+    
+    static void PrintMessage(object? state)
+    {
+        // Здесь вы можете вставить свой код для вывода сообщения
+        Console.WriteLine($"Текущее время: {DateTime.Now}");
+    }
 }
+
+ 
 
 public static class BitConverterExtensions
 {

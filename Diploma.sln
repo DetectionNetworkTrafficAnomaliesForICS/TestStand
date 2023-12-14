@@ -1,6 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulationPLC", "SimulationPLC\SimulationPLC.csproj", "{12B5AB50-BBC9-472D-B68A-C9D7CB339154}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{60300DDC-0D53-4C25-9D9B-172910A113AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulationLib", "SimulationLib\SimulationLib.csproj", "{1F0C27FC-B0A2-4A96-9F5F-B70002A5FDB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{ED7DF272-B8B9-431B-BEDC-6933AD40BD5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +12,17 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{12B5AB50-BBC9-472D-B68A-C9D7CB339154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{12B5AB50-BBC9-472D-B68A-C9D7CB339154}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{12B5AB50-BBC9-472D-B68A-C9D7CB339154}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{12B5AB50-BBC9-472D-B68A-C9D7CB339154}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60300DDC-0D53-4C25-9D9B-172910A113AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60300DDC-0D53-4C25-9D9B-172910A113AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60300DDC-0D53-4C25-9D9B-172910A113AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60300DDC-0D53-4C25-9D9B-172910A113AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F0C27FC-B0A2-4A96-9F5F-B70002A5FDB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F0C27FC-B0A2-4A96-9F5F-B70002A5FDB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F0C27FC-B0A2-4A96-9F5F-B70002A5FDB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F0C27FC-B0A2-4A96-9F5F-B70002A5FDB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED7DF272-B8B9-431B-BEDC-6933AD40BD5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED7DF272-B8B9-431B-BEDC-6933AD40BD5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED7DF272-B8B9-431B-BEDC-6933AD40BD5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED7DF272-B8B9-431B-BEDC-6933AD40BD5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

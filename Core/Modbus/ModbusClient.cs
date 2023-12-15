@@ -22,9 +22,15 @@ public static class ModbusClient
                 {
                     case TypeRegister.Holding:
                     {
-                        await master.WriteMultipleRegistersAsync(plc.Id, node.Register.Address, node.Value.Hex.Bytes);
+                        await master.WriteMultipleRegistersAsync(plc.Id, node.Register.Address, node.Value.Bytes);
                     }
                         break;
+                    case TypeRegister.Input:
+                        break;
+                    case TypeRegister.Coil:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 } 
                 
                 Console.WriteLine($"Send success from {plc} data: {node.Register}");

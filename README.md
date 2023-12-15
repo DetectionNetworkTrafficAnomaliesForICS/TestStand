@@ -57,3 +57,4 @@
 ## Тестирование 
 Программа Lectus отображает значение переменной 
 ![img.png](screenshots/lectus.png)
+![img.png](screenshots/console_app.png)

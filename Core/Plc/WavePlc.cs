@@ -1,12 +1,11 @@
 ﻿using Core.Type;
 using PlcLib.Model;
-using PlcLib.Net.Interfaces;
 using PlcLib.Plc.Interfaces;
 
 namespace Core.Plc;
 
 /// <summary>
-/// Клвсс эмулирующий работу датчика волны 
+/// Класс эмулирующий работу датчика волны 
 /// </summary>
 /// <returns>The result of the custom operation.</returns>
 public class WavePlc : IPlc
@@ -15,7 +14,7 @@ public class WavePlc : IPlc
     private readonly float _a;
 
     private float _current = 0f;
-    private readonly Register _register = new Register(0xC04, TypeRegister.Holding);
+    private readonly Register _register = new(0xC04, TypeRegister.Holding);
     
 
     public byte Id => 1;
@@ -25,10 +24,8 @@ public class WavePlc : IPlc
     /// <summary>
     /// Инициализация PLC <see cref="WavePlc"/> class.
     /// </summary>
-    /// <param name="netInterface">Сетевой интерфейс PLC</param>
     /// <param name="a">Амплитуда волны</param>
     /// <param name="w">Угловая скорость волны</param>
-    /// <returns>The result of the custom operation.</returns>
     public WavePlc(float w, float a)
     {
         _w = w;

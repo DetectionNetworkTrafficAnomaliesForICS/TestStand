@@ -15,7 +15,7 @@ public class Node
     /// <summary>
     /// Значение переменной
     /// </summary>
-    public IType Value { get; init; }
+    public IType Value { get; }
 
     public Node(Register register, IType value)
     {

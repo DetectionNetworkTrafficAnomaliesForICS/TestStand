@@ -1,41 +1,77 @@
 ﻿using Core.Net;
 using Core.Opc;
 using Core.Plc;
+using PlcLib.OpcClient.Interfaces;
+using PlcLib.Plc.Interfaces;
 
 namespace ConsoleApp;
 
-class Program
+abstract class Program
 {
-    private static readonly WavePlc Plc = new WavePlc(12f, 20f);
-    private static readonly Lectus LectusClient = new Lectus(new LocalHost(502));
+    private static readonly CancellationTokenSource cts = new CancellationTokenSource();
 
-    static async Task Main()
+    private static async Task Main()
     {
-        Console.WriteLine("Start of the program.");
         
-        await RunLoopAsync();
+        float angularVelocity, amplitude, repeatTime;
 
-        Console.WriteLine("End of the program.");
+        Console.WriteLine("Запуск программы \"Тестовый стенд\" Котова Родиона ФИТ НГУ");
+
+        // Считывание angularVelocity из консоли
+        do
+        {
+            Console.Write("Введите угловую скорость (angularVelocity): ");
+        } while (!float.TryParse(Console.ReadLine(), out angularVelocity) || angularVelocity == 0);
+
+        // Считывание amplitude из консоли
+        do
+        {
+            Console.Write("Введите амплитуду (amplitude): ");
+        } while (!float.TryParse(Console.ReadLine(), out amplitude) || amplitude == 0);
+
+        // Считывание repeatTime из консоли
+        do
+        {
+            Console.Write("Введите время повторения (repeatTime): ");
+        } while (!float.TryParse(Console.ReadLine(), out repeatTime) || repeatTime == 0);
+
+        var plc = new WavePlc(angularVelocity, amplitude);
+        var lectusClient = new LectusClient(new LocalHost(502));
+
+        
+        
+        Console.WriteLine("Для остановки программы нажмите Enter");
+
+        // Запуск асинхронного цикла
+        var loopTask = RunLoopAsync(repeatTime, plc, lectusClient);
+
+        // Ожидание нажатия Enter для завершения программы
+        Console.ReadLine();
+
+        // При нажатии Enter, отменяем выполнение цикла
+        cts.Cancel();
+
+        // Ожидание завершения асинхронного цикла
+        loopTask.Wait();
+        
+        await RunLoopAsync(repeatTime, plc, lectusClient);
     }
 
-    static async Task RunLoopAsync()
+    private static async Task RunLoopAsync(float repeatTime, IPlc plc, IOpcClient opcClient)
     {
         var time = 0f;
-        while (true)
+        while (!cts.Token.IsCancellationRequested)
         {
-            Console.WriteLine($"Inside the loop{time}");
+            await Task.Delay((int)(repeatTime * 1000f), cts.Token);
+            
+            if (cts.Token.IsCancellationRequested)
+            {
+                break;
+            }
 
-            // Pause for 5 seconds
-            await Task.Delay(5000);
-            time += 5f;
-            Plc.NextIteration(time);
-            LectusClient.GetFrom(Plc);
-            // Optionally, add a condition to exit the loop
-            // For example, break the loop after a certain number of iterations
-            // if (someCondition)
-            // {
-            //    break;
-            // }
+            time += repeatTime;
+            plc.NextIteration(time);
+            opcClient.GetFrom(plc);
         }
     }
 }

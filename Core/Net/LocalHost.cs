@@ -10,7 +10,7 @@ public class LocalHost : INet
 
     public string Address => "127.0.0.1";
 
-    public ushort Port { get; init; }
+    public ushort Port { get; }
     
     public LocalHost(ushort port)
     {

@@ -1,6 +1,4 @@
-﻿using PlcLib.Model;
-
-namespace PlcLib.Type.Interfaces;
+﻿namespace PlcLib.Type.Interfaces;
 
 /// <summary>
 /// Интерфейс для реализации типов Modbus
@@ -8,8 +6,8 @@ namespace PlcLib.Type.Interfaces;
 public interface IType
 {
     /// <summary>
-    /// Получение hex значения 
+    /// Получение байт типа значения 
     /// </summary>
-    /// <returns>The result of the custom operation.</returns>
-    Hex Hex { get; set; }
+    /// <returns>массив байтов</returns>
+    public ushort[] Bytes { get; }
 }

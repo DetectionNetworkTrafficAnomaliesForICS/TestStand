@@ -12,12 +12,9 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release]
 
-    runs-on: windows-latest  
-
-    env:
-      Solution_Name: ConsoleApp                    
+    runs-on: windows-latest                
 
     steps:
     - name: Checkout repository
@@ -38,4 +35,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: publish-artifacts
-        path: ./$env:Solution_Name/bin/Release/net7.0/win-x64/publish
+        path: ./ConsoleApp/bin/Release/net7.0/win-x64/publish

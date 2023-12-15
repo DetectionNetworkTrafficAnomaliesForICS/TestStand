@@ -1,0 +1,41 @@
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: [ "feature/init-project#2" ]
+  pull_request:
+    branches: [ "feature/init-project#2" ]
+
+jobs:
+
+  build:
+
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    runs-on: windows-latest  
+
+    env:
+      Solution_Name: ConsoleApp                    
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 7.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Publish for Windows x64
+      run: dotnet publish -c Release -r win-x64
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: publish-artifacts
+        path: ./$env:Solution_Name/bin/Release/net7.0/win-x64/publish

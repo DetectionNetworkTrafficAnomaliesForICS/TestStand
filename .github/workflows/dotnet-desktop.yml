@@ -2,9 +2,9 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "feature/init-project#2" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "feature/init-project#2" ]
+    branches: [ "master" ]
 
 jobs:
 

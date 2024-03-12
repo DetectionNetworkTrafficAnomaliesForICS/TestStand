@@ -2,9 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestStand.CLI", "TestStand.CLI\TestStand.CLI.csproj", "{60300DDC-0D53-4C25-9D9B-172910A113AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestStand.Lib", "TestStand.Lib\TestStand.Lib.csproj", "{1F0C27FC-B0A2-4A96-9F5F-B70002A5FDB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestStand.Abstractions", "TestStand.Abstractions\TestStand.Abstractions.csproj", "{1F0C27FC-B0A2-4A96-9F5F-B70002A5FDB8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestStand.Core", "TestStand.Core\TestStand.Core.csproj", "{ED7DF272-B8B9-431B-BEDC-6933AD40BD5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestStand.Lib", "TestStand.Lib\TestStand.Lib.csproj", "{0D6ECBDA-528F-4D04-8077-38DA68A59C15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +26,9 @@ Global
 		{ED7DF272-B8B9-431B-BEDC-6933AD40BD5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED7DF272-B8B9-431B-BEDC-6933AD40BD5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED7DF272-B8B9-431B-BEDC-6933AD40BD5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D6ECBDA-528F-4D04-8077-38DA68A59C15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D6ECBDA-528F-4D04-8077-38DA68A59C15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D6ECBDA-528F-4D04-8077-38DA68A59C15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D6ECBDA-528F-4D04-8077-38DA68A59C15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

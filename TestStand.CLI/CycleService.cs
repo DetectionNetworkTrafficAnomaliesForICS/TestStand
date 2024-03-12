@@ -1,9 +1,8 @@
 ﻿using System.Timers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using TestStand.Lib;
-using TestStand.Lib.Model;
-using TestStand.Lib.OpcClient.Interfaces;
-using TestStand.Lib.Plc.Interfaces;
+using TestStand.Abstractions.Opc.Interfaces;
+using TestStand.Abstractions.Plc.Interfaces.IPlc.Interfaces;
 using Timer = System.Timers.Timer;
 
 namespace TestStand.CLI;
@@ -12,20 +11,20 @@ public class CycleService : BackgroundService
 {
     private readonly IConfiguration _config;
     private readonly IPlc _plc;
-    private readonly IOpcClient _opc;
+    private readonly IOpc _opc;
 
     private long _cycles;
 
-    public CycleService(IPlc plc, IOpcClient opc, IConfiguration config)
+    public CycleService(IPlc plc, IOpc opc, Abstractions.Configuration.Interfaces.IEmulationConfiguration config)
     {
         _plc = plc;
         _opc = opc;
-        _config = config;
+        _config = config 
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var timer = new Timer(_config.DurationCycle);
+        var timer = new Timer(_config.);
 
         timer.Elapsed += OnTimedEvent;
         timer.Start();

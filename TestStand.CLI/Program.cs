@@ -2,12 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TestStand.Core.Net;
-using TestStand.Core.Opc;
-using TestStand.Core.Plc;
-using TestStand.Lib.OpcClient.Interfaces;
-using TestStand.Lib.Plc.Interfaces;
-using IConfiguration = TestStand.Lib.Model.IConfiguration;
+using IConfiguration = TestStand.Lib.Configuration.Interfaces.IConfiguration;
 
 namespace TestStand.CLI;
 
@@ -24,9 +19,9 @@ internal static class Program
             .ConfigureServices((_, services) =>
             {
                 services.AddHostedService<CycleService>();
-                services.AddSingleton<IConfiguration, Configuration>();
+                services.AddSingleton<IConfiguration, EmulationConfiguration>();
                 services.AddSingleton<IPlc>(new WavePlc(10f, 12f));
-                services.AddSingleton<IOpcClient>(new LectusClient(new LocalHost(502)));
+                services.AddSingleton<IOpcClient>(new Lectus(new LocalHost(502)));
             });
     }
 }

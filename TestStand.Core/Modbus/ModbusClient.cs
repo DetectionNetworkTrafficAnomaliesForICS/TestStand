@@ -18,22 +18,22 @@ public static class ModbusClient
         {
             foreach (var node in nodes)
             {
-                switch (node.Register.TypeRegister)
+                switch (node.Register.Type)
                 {
-                    case TypeRegister.Holding:
+                    case Register.TypeRegister.Holding:
                     {
                         await master.WriteMultipleRegistersAsync(plc.Id, node.Register.Address, node.Value.Bytes);
                     }
                         break;
-                    case TypeRegister.Input:
+                    case Register.TypeRegister.Input:
                         break;
-                    case TypeRegister.Coil:
+                    case Register.TypeRegister.Coil:
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 } 
                 
-                Console.WriteLine($"Send success from {plc} data: {node.Register}");
+                Console.WriteLine($"{plc} successfully sent the node {node}");
             }
         }
         catch (Exception ex)

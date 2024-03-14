@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TestStand.Core;
 using TestStand.Core.Cycle;
 using TestStand.Core.Net;
 using TestStand.Core.Opc;
@@ -15,6 +14,7 @@ internal static class Program
 {
     public static void Main(string[] args)
     {
+        Console.WriteLine("Запуск программы \"Тестовый стенд\" Котова Родиона ФИТ НГУ");
         CreateHostBuilder(args).Build().Run();
     }
 

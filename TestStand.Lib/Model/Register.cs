@@ -13,18 +13,24 @@ public class Register
     /// <summary>
     /// Тип регистра 
     /// </summary>
-    public TypeRegister TypeRegister { get; }
+    public TypeRegister Type { get; }
     
     public Register(ushort address, TypeRegister typeRegister)
     {
         Address = address;
-        TypeRegister = typeRegister;
+        Type = typeRegister;
     }
+
+    public override string ToString()
+    {
+        return $"{Type}#{Address}";
+    }
+
+    public enum TypeRegister
+     {
+         Holding,
+         Input,
+         Coil
+     }
 }
 
-public enum TypeRegister
-{
-    Holding,
-    Input,
-    Coil
-}

@@ -15,6 +15,11 @@ public class Float : IType
     {
         _value = value;
     }
+
+    public override string ToString()
+    {
+        return $"{_value}";
+    }
 }
 
 public static class BitConverterExtensions

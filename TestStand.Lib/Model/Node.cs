@@ -22,4 +22,9 @@ public class Node
         Register = register;
         Value = value;
     }
+
+    public override string ToString()
+    {
+        return $"{Register} = {Value}";
+    }
 }

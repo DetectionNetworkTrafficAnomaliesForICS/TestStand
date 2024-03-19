@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TestStand.Core.Cycle;
-using TestStand.Core.Net;
+using TestStand.Core.Lectus;
 using TestStand.Core.Opc;
 using TestStand.Core.Plc;
 using TestStand.Lib.OpcClient.Interfaces;
@@ -29,11 +29,12 @@ internal static class Program
             .ConfigureServices((hostContext, services) =>
             {
                 services.AddOptions();
+                services.Configure<LectusConfiguration>(hostContext.Configuration.GetSection(nameof(LectusConfiguration)));
                 services.Configure<WavePlcConfiguration>(hostContext.Configuration.GetSection(nameof(WavePlcConfiguration)));
                 services.Configure<CycleConfiguration>(hostContext.Configuration.GetSection(nameof(CycleConfiguration)));
                 services.AddHostedService<CycleService>();
                 services.AddSingleton<IPlc, WavePlc>();
-                services.AddSingleton<IOpcClient>(new LectusClient(new LocalHost(502)));
+                services.AddSingleton<IOpcClient, LectusClient>();
             });
     }
 }

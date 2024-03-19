@@ -1,17 +1,17 @@
-﻿namespace TestStand.Lib.Net.Interfaces;
+﻿namespace TestStand.Lib.Net;
 
 /// <summary>
 /// Сетевой интерфейс
 /// </summary>
-public interface INet
+public class NetConfiguration
 {
     /// <summary>
     /// IpV4 адресс
     /// </summary>
-    string Address { get; }
-    
+    public required string Address { get; set; }
+
     /// <summary>
     /// Порт
     /// </summary>
-    ushort Port { get; }
+    public ushort Port { get; set; }
 }

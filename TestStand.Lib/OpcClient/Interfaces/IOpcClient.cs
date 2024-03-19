@@ -1,5 +1,5 @@
 ﻿using System.Net.Sockets;
-using TestStand.Lib.Net.Interfaces;
+using TestStand.Lib.Net;
 using TestStand.Lib.Plc.Interfaces;
 
 namespace TestStand.Lib.OpcClient.Interfaces;
@@ -9,8 +9,8 @@ namespace TestStand.Lib.OpcClient.Interfaces;
 /// </summary>
 public interface IOpcClient
 {
-    INet NetInterface { get; }
+    NetConfiguration NetConfiguration { get; }
 
-    TcpClient TcpClient => new(NetInterface.Address, NetInterface.Port);
+    TcpClient TcpClient => new(NetConfiguration.Address, NetConfiguration.Port);
     void GetFrom(IPlc plc);
 }

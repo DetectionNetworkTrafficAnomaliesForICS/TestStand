@@ -1,36 +1,35 @@
 ﻿namespace TestStand.Lib.Model;
 
-/// <summary>
-/// Регистр Modbus
-/// </summary>
 public class Register
 {
+    public required RegisterConfiguration Configuration { get; init; }
+    
     /// <summary>
     /// Адресс регистра
     /// </summary>
-    public ushort Address { get; }
-    
+    public ushort Address => Convert.ToUInt16(Configuration.Address,16);
+
     /// <summary>
     /// Тип регистра 
     /// </summary>
-    public TypeRegister Type { get; }
+    public TypeRegister Type =>
+        Configuration.Type switch
+        {
+            "Holding" => TypeRegister.Holding,
+            "Coil" => TypeRegister.Coil,
+            "Input" => TypeRegister.Input,
+            _ => Type
+        };
+
+    // public Register(RegisterConfiguration configuration)
+    // {
+    //     Configuration = configuration;
+    // }
     
-    public Register(ushort address, TypeRegister typeRegister)
-    {
-        Address = address;
-        Type = typeRegister;
-    }
-
-    public override string ToString()
-    {
-        return $"{Type}#{Address}";
-    }
-
     public enum TypeRegister
-     {
-         Holding,
-         Input,
-         Coil
-     }
+    {
+        Holding,
+        Input,
+        Coil
+    }
 }
-

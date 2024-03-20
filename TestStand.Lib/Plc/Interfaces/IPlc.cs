@@ -7,18 +7,6 @@ namespace TestStand.Lib.Plc.Interfaces;
 /// </summary>
 public interface IPlc
 {
-    
-    /// <summary>
-    /// Идентификационный номер
-    /// </summary>
-    byte Id { get; }
-    
-    /// <summary>
-    /// Набор переменных
-    /// </summary>
-    IEnumerable<Node> Nodes { get; }
-
-
     /// <summary>
     /// Функция переводит PLC в следующее фиксированное состояние 
     /// </summary>

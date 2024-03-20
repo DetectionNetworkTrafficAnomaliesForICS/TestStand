@@ -7,7 +7,7 @@ using TestStand.Lib.Register.Interfaces;
 
 namespace TestStand.Core.Modbus;
 
-public class ModbusService: IModbusService
+public class ModbusService : IModbusService
 {
     private readonly IСonverterService _converterService;
 
@@ -28,9 +28,8 @@ public class ModbusService: IModbusService
                 case TypeRegister.Holding:
                 {
                     var converter = _converterService.GetConverter<T>();
-                      await master.WriteMultipleRegistersAsync(modbusClient.ServerConfiguration.Id, register.Address,
-                          converter?.GetBytes(variable).ToUShortArray());
-                    
+                    await master.WriteMultipleRegistersAsync(modbusClient.ServerConfiguration.Id, register.Address,
+                        converter?.GetBytes(variable).ToUShortArray());
                 }
                     break;
                 default:
@@ -48,6 +47,7 @@ public class ModbusService: IModbusService
         return true;
     }
 }
+
 public static class BitConverterExtensions
 {
     public static ushort[] ToUShortArray(this byte[] bytes)

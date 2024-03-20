@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Net.Sockets;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TestStand.Core.Converter;
@@ -8,6 +9,7 @@ using TestStand.Core.Modbus;
 using TestStand.Core.Plc;
 using TestStand.Core.Register;
 using TestStand.Lib.Converter.Interfaces;
+using TestStand.Lib.Device.Interfaces;
 using TestStand.Lib.Modbus.Interfaces;
 using TestStand.Lib.Plc.Interfaces;
 
@@ -32,15 +34,20 @@ internal static class Program
             .ConfigureServices((hostContext, services) =>
             {
                 services.AddOptions();
-                services.Configure<LectusConfiguration>(hostContext.Configuration.GetSection(nameof(LectusConfiguration)));
-                services.Configure<WavePlcConfiguration>(hostContext.Configuration.GetSection(nameof(WavePlcConfiguration)));
-                services.Configure<CycleConfiguration>(hostContext.Configuration.GetSection(nameof(CycleConfiguration)));
+                services.Configure<LectusConfiguration>(
+                    hostContext.Configuration.GetSection(nameof(LectusConfiguration)));
+                services.Configure<WavePlcConfiguration>(
+                    hostContext.Configuration.GetSection(nameof(WavePlcConfiguration)));
+                services.Configure<CycleConfiguration>(
+                    hostContext.Configuration.GetSection(nameof(CycleConfiguration)));
                 services.AddHostedService<CycleService>();
-                services.AddSingleton<IСonverterService,СonverterService>();
+                services.AddSingleton<IСonverterService, СonverterService>();
                 services.AddSingleton<IConverter<float>, FloatСonverter>();
-                services.AddSingleton<IModbusService,ModbusService>();
-                services.AddSingleton<IPlc, WavePlc>();
-                services.AddSingleton<LectusClient>();
+                services.AddSingleton<IModbusService, ModbusService>();
+                services.AddTransient<TcpClient>();
+                services.AddSingleton<WavePlc>();
+                services.AddSingleton<IEmulationDevice>(serv => serv.GetRequiredService<WavePlc>());
+                services.AddTransient<LectusClient>();
             });
     }
 }

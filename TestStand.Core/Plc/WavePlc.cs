@@ -15,6 +15,7 @@ public class WavePlc : IPlc
     private readonly LectusClient _lectusClient;
     private readonly IModbusService _modbusService;
 
+    public string Name => nameof(WavePlc);
     private float _current;
 
     public WavePlc(IOptions<WavePlcConfiguration> waveConfig, LectusClient lectusClient, IModbusService modbusService)
@@ -24,15 +25,26 @@ public class WavePlc : IPlc
         _modbusService = modbusService;
     }
 
-    public void NextIteration(float t)
+    public void UpdateByCycle(ulong cycle)
     {
-        _current = _waveConfig.Amplitude * float.Sin(_waveConfig.AngularVelocity * t);
+        _current = _waveConfig.Amplitude * float.Sin(_waveConfig.AngularVelocity * cycle);
         _modbusService.TryRequestWriteAsync(_lectusClient, _lectusClient.Configuration.OscilloscopeV, _current).GetAwaiter()
             .GetResult();
     }
 
-    public override string ToString()
+    public Task Setup()
     {
-        return $"{nameof(WavePlc)}";
+        _lectusClient.Connect();
+
+        return Task.CompletedTask;
     }
+
+    public Task Shutdown()
+    {
+        _lectusClient.Disconnect();
+        
+        return Task.CompletedTask;
+    }
+
+     
 }

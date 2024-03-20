@@ -3,9 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TestStand.Core.Cycle;
 using TestStand.Core.Lectus;
-using TestStand.Core.Opc;
 using TestStand.Core.Plc;
-using TestStand.Lib.OpcClient.Interfaces;
+using TestStand.Lib.Modbus.Interfaces;
 using TestStand.Lib.Plc.Interfaces;
 
 namespace TestStand.CLI;
@@ -34,7 +33,7 @@ internal static class Program
                 services.Configure<CycleConfiguration>(hostContext.Configuration.GetSection(nameof(CycleConfiguration)));
                 services.AddHostedService<CycleService>();
                 services.AddSingleton<IPlc, WavePlc>();
-                services.AddSingleton<IOpcClient, LectusClient>();
+                services.AddSingleton<IModbusClient, LectusClient>();
             });
     }
 }

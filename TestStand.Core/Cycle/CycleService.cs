@@ -1,7 +1,7 @@
 ﻿using System.Timers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using TestStand.Lib.OpcClient.Interfaces;
+using TestStand.Lib.Modbus.Interfaces;
 using TestStand.Lib.Plc.Interfaces;
 using Timer = System.Timers.Timer;
 
@@ -10,15 +10,15 @@ namespace TestStand.Core.Cycle;
 public class CycleService : BackgroundService
 {
     private readonly IPlc _plc;
-    private readonly IOpcClient _opc;
+    private readonly IModbusClient _modbus;
     private readonly IOptions<CycleConfiguration> _cycleConfig;
 
     private long _cycles;
 
-    public CycleService(IPlc plc, IOpcClient opc, IOptions<CycleConfiguration> cycleConfig)
+    public CycleService(IPlc plc, IModbusClient modbus, IOptions<CycleConfiguration> cycleConfig)
     {
         _plc = plc;
-        _opc = opc;
+        _modbus = modbus;
         _cycleConfig = cycleConfig;
    }
 
@@ -36,6 +36,6 @@ public class CycleService : BackgroundService
     {
         _cycles++;
         _plc.NextIteration(_cycles);
-        _opc.GetFrom(_plc);
+        _modbus.GetFrom(_plc);
     }
 }

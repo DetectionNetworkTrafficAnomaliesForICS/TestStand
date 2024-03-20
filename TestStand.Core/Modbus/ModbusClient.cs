@@ -1,16 +1,16 @@
 ﻿using NModbusAsync;
+using TestStand.Lib.Modbus.Interfaces;
 using TestStand.Lib.Model;
-using TestStand.Lib.OpcClient.Interfaces;
 using TestStand.Lib.Plc.Interfaces;
 
 namespace TestStand.Core.Modbus;
 
 public static class ModbusClient 
 {
-    public static async Task Send(IOpcClient opcClient, IPlc plc)
+    public static async Task Send(IModbusClient modbusClient, IPlc plc)
     {
         var factory = new ModbusFactory();
-        var master = factory.CreateTcpMaster(opcClient.TcpClient);
+        var master = factory.CreateTcpMaster(modbusClient.TcpClient);
 
         var nodes = plc.Nodes;
         

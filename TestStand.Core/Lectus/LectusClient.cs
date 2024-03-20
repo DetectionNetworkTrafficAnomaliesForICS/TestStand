@@ -6,11 +6,11 @@ namespace TestStand.Core.Lectus;
 
 public class LectusClient : IModbusClient
 {
-    private readonly IOptions<LectusConfiguration> _options;
-    public ModbusConfiguration ServerConfiguration => _options.Value.ModbusConfiguration;
+    public readonly LectusConfiguration Configuration;
+    public ModbusConfiguration ServerConfiguration => Configuration.ModbusConfiguration;
    
     public LectusClient(IOptions<LectusConfiguration> options)
     {   
-        _options = options;
+        Configuration = options.Value;
     }
 }

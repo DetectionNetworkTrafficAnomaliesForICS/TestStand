@@ -13,7 +13,7 @@ namespace TestStand.Core.Plc;
 /// <returns>The result of the custom operation.</returns>
 public class WavePlc : IPlc
 {
-    private readonly IOptions<WavePlcConfiguration> _waveConfig;
+    private readonly WavePlcConfiguration _waveConfig;
     private readonly LectusClient _lectusClient;
     private readonly ModbusService _modbusService;
 
@@ -25,14 +25,14 @@ public class WavePlc : IPlc
     
     public WavePlc(IOptions<WavePlcConfiguration> waveConfig, LectusClient lectusClient, ModbusService modbusService)
     {
-        _waveConfig = waveConfig;
+        _waveConfig = waveConfig.Value;
         _lectusClient = lectusClient;
         _modbusService = modbusService;
     }
 
     public void NextIteration(float t)
     {
-        _current = _waveConfig.Value.Amplitude * float.Sin(_waveConfig.Value.AngularVelocity * t);
+        _current = _waveConfig.Amplitude * float.Sin(_waveConfig.AngularVelocity * t);
         _modbusService.Send(_lectusClient, this).GetAwaiter().GetResult();
     }
 

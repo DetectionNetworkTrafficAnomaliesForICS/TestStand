@@ -25,11 +25,4 @@ public interface IRegister<T>
             "Input" => TypeRegister.Input,
             _ => Type
         };
-    
-    public enum TypeRegister
-    {
-        Holding,
-        Input,
-        Coil
-    }
 }

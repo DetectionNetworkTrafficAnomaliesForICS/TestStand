@@ -33,7 +33,7 @@ internal static class Program
                 services.Configure<WavePlcConfiguration>(hostContext.Configuration.GetSection(nameof(WavePlcConfiguration)));
                 services.Configure<CycleConfiguration>(hostContext.Configuration.GetSection(nameof(CycleConfiguration)));
                 services.AddHostedService<CycleService>();
-                services.AddSingleton<ModbusService>();
+                services.AddSingleton<IModbusService,ModbusService>();
                 services.AddSingleton<IPlc, WavePlc>();
                 services.AddSingleton<LectusClient>();
             });

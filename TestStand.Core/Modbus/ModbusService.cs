@@ -1,14 +1,15 @@
 ﻿using NModbusAsync;
 using TestStand.Lib.Modbus.Interfaces;
-
+using TestStand.Lib.Register;
 using TestStand.Lib.Register.Interfaces;
 
 
 namespace TestStand.Core.Modbus;
 
-public class ModbusService
+public class ModbusService: IModbusService
 {
-    public async Task Send<T>(IModbusClient modbusClient, IRegister<T> register, T variable)
+    
+    public async Task<bool> TryRequestWriteAsync<T>(IModbusClient modbusClient, IRegister<T> register, T variable)
     {
         var factory = new ModbusFactory();
         var master = factory.CreateTcpMaster(modbusClient.TcpClient);
@@ -17,14 +18,14 @@ public class ModbusService
         {
             switch (register.Type)
             {
-                case  IRegister<T>.TypeRegister.Holding:
+                case TypeRegister.Holding:
                 {
                     await master.WriteMultipleRegistersAsync(modbusClient.ServerConfiguration.Id, register.Address,
-                         register.GetBytes(variable).ToUShortArray());
+                        register.GetBytes(variable).ToUShortArray());
                 }
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    return false;
             }
 
             Console.WriteLine($"successfully sent {register} to {modbusClient}");
@@ -32,7 +33,10 @@ public class ModbusService
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
+            return false;
         }
+
+        return true;
     }
 }
 public static class BitConverterExtensions

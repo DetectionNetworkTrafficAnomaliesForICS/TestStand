@@ -1,4 +1,5 @@
-﻿using TestStand.Lib.Modbus;
+﻿using TestStand.Core.Register;
+using TestStand.Lib.Modbus;
 
 using TestStand.Lib.Register;
 

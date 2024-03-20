@@ -1,4 +1,5 @@
 ﻿using NModbusAsync;
+using TestStand.Lib.Converter.Interfaces;
 using TestStand.Lib.Modbus.Interfaces;
 using TestStand.Lib.Register;
 using TestStand.Lib.Register.Interfaces;
@@ -8,7 +9,13 @@ namespace TestStand.Core.Modbus;
 
 public class ModbusService: IModbusService
 {
-    
+    private readonly IСonverterService _converterService;
+
+    public ModbusService(IСonverterService converterService)
+    {
+        _converterService = converterService;
+    }
+
     public async Task<bool> TryRequestWriteAsync<T>(IModbusClient modbusClient, IRegister<T> register, T variable)
     {
         var factory = new ModbusFactory();
@@ -20,8 +27,10 @@ public class ModbusService: IModbusService
             {
                 case TypeRegister.Holding:
                 {
-                    await master.WriteMultipleRegistersAsync(modbusClient.ServerConfiguration.Id, register.Address,
-                        register.GetBytes(variable).ToUShortArray());
+                    var converter = _converterService.GetConverter<T>();
+                      await master.WriteMultipleRegistersAsync(modbusClient.ServerConfiguration.Id, register.Address,
+                          converter?.GetBytes(variable).ToUShortArray());
+                    
                 }
                     break;
                 default:

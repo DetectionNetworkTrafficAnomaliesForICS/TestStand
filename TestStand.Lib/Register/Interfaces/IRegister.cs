@@ -5,9 +5,6 @@ namespace TestStand.Lib.Register.Interfaces;
 public interface IRegister<T>
 {
     RegisterConfiguration Configuration { get; init; }
-
-    byte[] GetBytes(T value);
-    T FromByte(byte[] bytes);
     
     /// <summary>
     /// Адресс регистра

@@ -1,20 +1,11 @@
-﻿using TestStand.Lib.Register.Interfaces;
+﻿using TestStand.Lib.Register;
+using TestStand.Lib.Register.Interfaces;
 
-namespace TestStand.Lib.Register;
+namespace TestStand.Core.Register;
 
 public class FloatRegister : IRegister<float>
 {
     public required RegisterConfiguration Configuration { get; init; }
-    
-    public byte[] GetBytes(float value)
-    {
-        return BitConverter.GetBytes(value);
-    }
-
-    public float FromByte(byte[] bytes)
-    {
-        return BitConverter.ToSingle(bytes, 0);
-    }
 }
 
  

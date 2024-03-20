@@ -1,18 +1,23 @@
-﻿namespace TestStand.Lib.Model;
+﻿
 
-public class Register
+namespace TestStand.Lib.Register.Interfaces;
+
+public interface IRegister<T>
 {
-    public required RegisterConfiguration Configuration { get; init; }
+    RegisterConfiguration Configuration { get; init; }
+
+    byte[] GetBytes(T value);
+    T FromByte(byte[] bytes);
     
     /// <summary>
     /// Адресс регистра
     /// </summary>
-    public ushort Address => Convert.ToUInt16(Configuration.Address,16);
+    ushort Address => Convert.ToUInt16(Configuration.Address,16);
 
     /// <summary>
     /// Тип регистра 
     /// </summary>
-    public TypeRegister Type =>
+    TypeRegister Type =>
         Configuration.Type switch
         {
             "Holding" => TypeRegister.Holding,
@@ -20,11 +25,6 @@ public class Register
             "Input" => TypeRegister.Input,
             _ => Type
         };
-
-    // public Register(RegisterConfiguration configuration)
-    // {
-    //     Configuration = configuration;
-    // }
     
     public enum TypeRegister
     {

@@ -5,9 +5,9 @@ using TestStand.Lib.Plc.Interfaces;
 
 namespace TestStand.Core.Modbus;
 
-public static class ModbusClient 
+public class ModbusService 
 {
-    public static async Task Send(IModbusClient modbusClient, IPlc plc)
+    public async Task Send(IModbusClient modbusClient, IPlc plc)
     {
         var factory = new ModbusFactory();
         var master = factory.CreateTcpMaster(modbusClient.TcpClient);

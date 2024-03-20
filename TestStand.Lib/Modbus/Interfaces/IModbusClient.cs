@@ -12,6 +12,4 @@ public interface IModbusClient
     ModbusConfiguration ServerConfiguration { get; }
 
     TcpClient TcpClient => new(ServerConfiguration.NetConfiguration.Address, ServerConfiguration.NetConfiguration.Port);
-    
-    void GetFrom(IPlc plc);
 }

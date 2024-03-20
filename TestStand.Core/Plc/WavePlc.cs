@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
+using TestStand.Core.Lectus;
+using TestStand.Core.Modbus;
 using TestStand.Core.Type;
 using TestStand.Lib.Model;
 using TestStand.Lib.Plc.Interfaces;
@@ -12,6 +14,8 @@ namespace TestStand.Core.Plc;
 public class WavePlc : IPlc
 {
     private readonly IOptions<WavePlcConfiguration> _waveConfig;
+    private readonly LectusClient _lectusClient;
+    private readonly ModbusService _modbusService;
 
     private float _current;
     private readonly Register _register = new(0xC04, Register.TypeRegister.Holding);
@@ -19,14 +23,17 @@ public class WavePlc : IPlc
     public byte Id => 1;
     public IEnumerable<Node> Nodes => new List<Node>{new(_register, new Float(ref _current))};
     
-    public WavePlc(IOptions<WavePlcConfiguration> waveConfig)
+    public WavePlc(IOptions<WavePlcConfiguration> waveConfig, LectusClient lectusClient, ModbusService modbusService)
     {
         _waveConfig = waveConfig;
+        _lectusClient = lectusClient;
+        _modbusService = modbusService;
     }
 
     public void NextIteration(float t)
     {
         _current = _waveConfig.Value.Amplitude * float.Sin(_waveConfig.Value.AngularVelocity * t);
+        _modbusService.Send(_lectusClient, this).GetAwaiter().GetResult();
     }
 
     public override string ToString()

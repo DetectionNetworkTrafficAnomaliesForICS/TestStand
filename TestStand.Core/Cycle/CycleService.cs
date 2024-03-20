@@ -10,15 +10,13 @@ namespace TestStand.Core.Cycle;
 public class CycleService : BackgroundService
 {
     private readonly IPlc _plc;
-    private readonly IModbusClient _modbus;
     private readonly IOptions<CycleConfiguration> _cycleConfig;
 
     private long _cycles;
 
-    public CycleService(IPlc plc, IModbusClient modbus, IOptions<CycleConfiguration> cycleConfig)
+    public CycleService(IPlc plc, IOptions<CycleConfiguration> cycleConfig)
     {
         _plc = plc;
-        _modbus = modbus;
         _cycleConfig = cycleConfig;
    }
 
@@ -36,6 +34,6 @@ public class CycleService : BackgroundService
     {
         _cycles++;
         _plc.NextIteration(_cycles);
-        _modbus.GetFrom(_plc);
+        //_modbus.GetFrom(_plc);
     }
 }

@@ -16,7 +16,10 @@ public class WavePlc : IPlc
     private readonly IModbusService _modbusService;
 
     public string Name => nameof(WavePlc);
-    private float _current;
+    
+    private float _volt;
+    private bool _active;
+    
 
     public WavePlc(IOptions<WavePlcConfiguration> waveConfig, LectusClient lectusClient, IModbusService modbusService)
     {
@@ -27,8 +30,12 @@ public class WavePlc : IPlc
 
     public void UpdateByCycle(ulong cycle)
     {
-        _current = _waveConfig.Amplitude * float.Sin(_waveConfig.AngularVelocity * cycle);
-        _modbusService.TryRequestWriteAsync(_lectusClient, _lectusClient.Configuration.OscilloscopeV, _current).GetAwaiter()
+        _active = !_active;
+        _volt = _waveConfig.Amplitude * float.Sin(_waveConfig.AngularVelocity * cycle);
+
+        _modbusService.TryRequestWriteAsync(_lectusClient, _lectusClient.Configuration.OscilloscopeActive, _active)
+            .GetAwaiter().GetResult();
+        _modbusService.TryRequestWriteAsync(_lectusClient, _lectusClient.Configuration.OscilloscopeV, _volt).GetAwaiter()
             .GetResult();
     }
 

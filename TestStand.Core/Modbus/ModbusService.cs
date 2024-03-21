@@ -10,26 +10,34 @@ namespace TestStand.Core.Modbus;
 public class ModbusService : IModbusService
 {
     private readonly IСonverterService _converterService;
+    private readonly IModbusFactory _modbusFactory;
 
-    public ModbusService(IСonverterService converterService)
+    public ModbusService(IСonverterService converterService, IModbusFactory modbusFactory)
     {
         _converterService = converterService;
+        _modbusFactory = modbusFactory;
     }
 
     public async Task<bool> TryRequestWriteAsync<T>(IModbusClient modbusClient, IRegister<T> register, T variable)
     {
-        var factory = new ModbusFactory();
-        var master = factory.CreateTcpMaster(modbusClient.TcpClient);
+        var master = _modbusFactory.CreateTcpMaster(modbusClient.TcpClient);
 
         try
         {
+            var converter = _converterService.GetConverter<T>();
             switch (register.Type)
             {
                 case TypeRegister.Holding:
                 {
-                    var converter = _converterService.GetConverter<T>();
+                    
                     await master.WriteMultipleRegistersAsync(modbusClient.ServerConfiguration.Id, register.Address,
                         converter?.GetBytes(variable).ToUShortArray());
+                }
+                    break;
+                case TypeRegister.Coil:
+                {
+                    await master.WriteSingleCoilAsync(modbusClient.ServerConfiguration.Id, register.Address,
+                        (bool)converter?.GetBytes(variable).ToBool());
                 }
                     break;
                 default:
@@ -64,5 +72,9 @@ public static class BitConverterExtensions
 
         Array.Reverse(shorts);
         return shorts;
+    }
+    public static bool ToBool(this byte[] bytes)
+    {
+        return bytes[0] != 0;
     }
 }

@@ -7,10 +7,12 @@ namespace TestStand.Core.Converter;
 public class СonverterService: IСonverterService
 {
     private readonly IConverter<float> _converterFloat;
+    private readonly IConverter<bool> _converterBool;
 
-    public СonverterService(IConverter<float> converterFloat)
+    public СonverterService(IConverter<float> converterFloat, IConverter<bool> converterBool)
     {
         _converterFloat = converterFloat;
+        _converterBool = converterBool;
     }
 
     public IConverter<T>? GetConverter<T>()
@@ -18,6 +20,10 @@ public class СonverterService: IСonverterService
         if (typeof(T) == typeof(float))
         {
             return (IConverter<T>)_converterFloat;
+        }
+        if (typeof(T) == typeof(bool))
+        {
+            return (IConverter<T>)_converterBool;
         }
         return null;
     }

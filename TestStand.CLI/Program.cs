@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NModbusAsync;
 using TestStand.Core.Converter;
 using TestStand.Core.Cycle;
 using TestStand.Core.Lectus;
@@ -43,7 +44,9 @@ internal static class Program
                 services.AddHostedService<CycleService>();
                 services.AddSingleton<IСonverterService, СonverterService>();
                 services.AddSingleton<IConverter<float>, FloatСonverter>();
+                services.AddSingleton<IConverter<bool>, BoolConverter>();
                 services.AddSingleton<IModbusService, ModbusService>();
+                services.AddSingleton<IModbusFactory, ModbusFactory>();
                 services.AddTransient<TcpClient>();
                 services.AddSingleton<WavePlc>();
                 services.AddSingleton<IEmulationDevice>(serv => serv.GetRequiredService<WavePlc>());

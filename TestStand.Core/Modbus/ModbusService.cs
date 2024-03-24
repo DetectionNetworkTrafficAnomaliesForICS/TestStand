@@ -29,15 +29,35 @@ public class ModbusService : IModbusService
             {
                 case TypeRegister.Holding:
                 {
-                    
-                    await master.WriteMultipleRegistersAsync(modbusClient.ServerConfiguration.Id, register.Address,
-                        converter?.GetBytes(variable).ToUShortArray());
+                    var data = converter?.GetBytes(variable).ToUShortArray();
+                    if (data?.Length > 1)
+                    {
+                        await master.WriteMultipleRegistersAsync(modbusClient.ServerConfiguration.Id, register.Address,
+                            data);
+                    }
+
+                    if (data?.Length == 1)
+                    {
+                        await master.WriteSingleRegisterAsync(modbusClient.ServerConfiguration.Id, register.Address,
+                            data[0]);
+                    }
                 }
                     break;
                 case TypeRegister.Coil:
                 {
-                    await master.WriteSingleCoilAsync(modbusClient.ServerConfiguration.Id, register.Address,
-                        (bool)converter?.GetBytes(variable).ToBool());
+                    var data = converter?.GetBytes(variable).ToBoolArray();
+
+                    if (data?.Length > 1)
+                    {
+                        await master.WriteMultipleCoilsAsync(modbusClient.ServerConfiguration.Id, register.Address,
+                            data);
+                    }
+
+                    if (data?.Length == 1)
+                    {
+                        await master.WriteSingleCoilAsync(modbusClient.ServerConfiguration.Id, register.Address,
+                            data[0]);
+                    }
                 }
                     break;
                 default:
@@ -73,8 +93,16 @@ public static class BitConverterExtensions
         Array.Reverse(shorts);
         return shorts;
     }
-    public static bool ToBool(this byte[] bytes)
+
+    public static bool[] ToBoolArray(this byte[] bytes)
     {
-        return bytes[0] != 0;
+        bool[] boolArray = new bool[bytes.Length];
+
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            boolArray[i] = bytes[i] != 0;
+        }
+
+        return boolArray;
     }
 }

@@ -74,6 +74,64 @@ public class ModbusService : IModbusService
 
         return true;
     }
+
+    public async Task<(bool, T?)> TryRequestReadAsync<T>(IModbusClient modbusClient, IRegister<T> register)
+    {
+        var master = _modbusFactory.CreateTcpMaster(modbusClient.TcpClient);
+
+        try
+        {
+            var converter = _converterService.GetConverter<T>();
+            switch (register.Type)
+            {
+                case TypeRegister.Holding:
+                {
+                    var response = await master.ReadHoldingRegistersAsync(modbusClient.ServerConfiguration.Id,
+                        register.Address,
+                        (ushort)(converter.CountByte / 2));
+                    var bytes = response.Reverse().SelectMany(BitConverter.GetBytes).ToArray();
+                    var result = converter.FromByte(bytes);
+
+                    return (true, result);
+                }
+                case TypeRegister.Coil:
+                {
+                    var response = await master.ReadCoilsAsync(modbusClient.ServerConfiguration.Id, register.Address,
+                        converter.CountByte);
+                    var bytes = response.Reverse().SelectMany(BitConverter.GetBytes).ToArray();
+                    var result = converter.FromByte(bytes);
+
+                    return (true, result);
+                }
+                case TypeRegister.Input:
+                {
+                    var response = await master.ReadInputRegistersAsync(modbusClient.ServerConfiguration.Id,
+                        register.Address,
+                        (ushort)(converter.CountByte / 2));
+                    var bytes = response.Reverse().SelectMany(BitConverter.GetBytes).ToArray();
+                    var result = converter.FromByte(bytes);
+
+                    return (true, result);
+                }
+                case TypeRegister.DiscreteInput:
+                {
+                    var response = await master.ReadInputsAsync(modbusClient.ServerConfiguration.Id,
+                        register.Address,
+                         converter.CountByte);
+                    var bytes = response.Reverse().SelectMany(BitConverter.GetBytes).ToArray();
+                    var result = converter.FromByte(bytes);
+
+                    return (true, result);
+                }
+                default:
+                    return (false, default);
+            }
+        }
+        catch (Exception ex)
+        {
+            return (false, default);
+        }
+    }
 }
 
 public static class BitConverterExtensions
@@ -100,7 +158,7 @@ public static class BitConverterExtensions
 
         for (int i = 0; i < bytes.Length; i++)
         {
-            boolArray[i] = bytes[i] != 0;
+            boolArray[i] = bytes[i] == 0;
         }
 
         return boolArray;

@@ -7,9 +7,4 @@
         <RootNamespace>TestStand.Lib</RootNamespace>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Model\" />
-      <Folder Include="Net\Interfaces\" />
-    </ItemGroup>
-
 </Project>

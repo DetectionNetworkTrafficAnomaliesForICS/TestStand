@@ -3,6 +3,7 @@
 public enum TypeRegister
 {
     Holding,
+    DiscreteInput,
     Input,
     Coil
 }

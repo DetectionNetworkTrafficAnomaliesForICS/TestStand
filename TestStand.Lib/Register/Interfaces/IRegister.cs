@@ -1,15 +1,13 @@
-﻿
-
-namespace TestStand.Lib.Register.Interfaces;
+﻿namespace TestStand.Lib.Register.Interfaces;
 
 public interface IRegister<T>
 {
     RegisterConfiguration Configuration { get; init; }
-    
+
     /// <summary>
     /// Адресс регистра
     /// </summary>
-    ushort Address => Convert.ToUInt16(Configuration.Address,16);
+    ushort Address => Convert.ToUInt16(Configuration.Address, 16);
 
     /// <summary>
     /// Тип регистра 

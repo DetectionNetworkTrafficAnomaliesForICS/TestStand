@@ -1,6 +1,8 @@
-﻿namespace TestStand.Lib.Register.Interfaces;
+﻿using TestStand.Lib.Converter.Interfaces;
 
-public interface IRegister<T>
+namespace TestStand.Lib.Register.Interfaces;
+
+public interface IRegister<T> : IConverter<T>
 {
     RegisterConfiguration Configuration { get; init; }
 
@@ -18,6 +20,7 @@ public interface IRegister<T>
             "Holding" => TypeRegister.Holding,
             "Coil" => TypeRegister.Coil,
             "Input" => TypeRegister.Input,
+            "DiscreteInput" => TypeRegister.DiscreteInput,
             _ => Type
         };
 }

@@ -3,16 +3,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NModbusAsync;
-using TestStand.Core.Converter;
 using TestStand.Core.Cycle;
 using TestStand.Core.Lectus;
 using TestStand.Core.Modbus;
 using TestStand.Core.Plc;
-using TestStand.Core.Register;
-using TestStand.Lib.Converter.Interfaces;
 using TestStand.Lib.Device.Interfaces;
 using TestStand.Lib.Modbus.Interfaces;
-using TestStand.Lib.Plc.Interfaces;
 
 namespace TestStand.CLI;
 
@@ -42,9 +38,6 @@ internal static class Program
                 services.Configure<CycleConfiguration>(
                     hostContext.Configuration.GetSection(nameof(CycleConfiguration)));
                 services.AddHostedService<CycleService>();
-                services.AddSingleton<IСonverterService, СonverterService>();
-                services.AddSingleton<IConverter<float>, FloatСonverter>();
-                services.AddSingleton<IConverter<bool>, BoolConverter>();
                 services.AddSingleton<IModbusService, ModbusService>();
                 services.AddSingleton<IModbusFactory, ModbusFactory>();
                 services.AddTransient<TcpClient>();

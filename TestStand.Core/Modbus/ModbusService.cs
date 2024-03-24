@@ -1,5 +1,4 @@
 ﻿using NModbusAsync;
-using TestStand.Lib.Converter.Interfaces;
 using TestStand.Lib.Modbus.Interfaces;
 using TestStand.Lib.Register;
 using TestStand.Lib.Register.Interfaces;
@@ -9,12 +8,10 @@ namespace TestStand.Core.Modbus;
 
 public class ModbusService : IModbusService
 {
-    private readonly IСonverterService _converterService;
     private readonly IModbusFactory _modbusFactory;
 
-    public ModbusService(IСonverterService converterService, IModbusFactory modbusFactory)
+    public ModbusService(IModbusFactory modbusFactory)
     {
-        _converterService = converterService;
         _modbusFactory = modbusFactory;
     }
 
@@ -24,19 +21,19 @@ public class ModbusService : IModbusService
 
         try
         {
-            var converter = _converterService.GetConverter<T>();
+ 
             switch (register.Type)
             {
                 case TypeRegister.Holding:
                 {
-                    var data = converter?.GetBytes(variable).ToUShortArray();
-                    if (data?.Length > 1)
+                    var data = register.GetBytes(variable).ToUShortArray();
+                    if (data.Length > 1)
                     {
                         await master.WriteMultipleRegistersAsync(modbusClient.ServerConfiguration.Id, register.Address,
                             data);
                     }
 
-                    if (data?.Length == 1)
+                    if (data.Length == 1)
                     {
                         await master.WriteSingleRegisterAsync(modbusClient.ServerConfiguration.Id, register.Address,
                             data[0]);
@@ -45,15 +42,15 @@ public class ModbusService : IModbusService
                     break;
                 case TypeRegister.Coil:
                 {
-                    var data = converter?.GetBytes(variable).ToBoolArray();
+                    var data = register.GetBytes(variable).ToBoolArray();
 
-                    if (data?.Length > 1)
+                    if (data.Length > 1)
                     {
                         await master.WriteMultipleCoilsAsync(modbusClient.ServerConfiguration.Id, register.Address,
                             data);
                     }
 
-                    if (data?.Length == 1)
+                    if (data.Length == 1)
                     {
                         await master.WriteSingleCoilAsync(modbusClient.ServerConfiguration.Id, register.Address,
                             data[0]);
@@ -81,25 +78,24 @@ public class ModbusService : IModbusService
 
         try
         {
-            var converter = _converterService.GetConverter<T>();
             switch (register.Type)
             {
                 case TypeRegister.Holding:
                 {
                     var response = await master.ReadHoldingRegistersAsync(modbusClient.ServerConfiguration.Id,
                         register.Address,
-                        (ushort)(converter.CountByte / 2));
+                        (ushort)(register.CountByte / 2));
                     var bytes = response.Reverse().SelectMany(BitConverter.GetBytes).ToArray();
-                    var result = converter.FromByte(bytes);
+                    var result = register.FromByte(bytes);
 
                     return (true, result);
                 }
                 case TypeRegister.Coil:
                 {
                     var response = await master.ReadCoilsAsync(modbusClient.ServerConfiguration.Id, register.Address,
-                        converter.CountByte);
+                        register.CountByte);
                     var bytes = response.Reverse().SelectMany(BitConverter.GetBytes).ToArray();
-                    var result = converter.FromByte(bytes);
+                    var result = register.FromByte(bytes);
 
                     return (true, result);
                 }
@@ -107,9 +103,9 @@ public class ModbusService : IModbusService
                 {
                     var response = await master.ReadInputRegistersAsync(modbusClient.ServerConfiguration.Id,
                         register.Address,
-                        (ushort)(converter.CountByte / 2));
+                        (ushort)(register.CountByte / 2));
                     var bytes = response.Reverse().SelectMany(BitConverter.GetBytes).ToArray();
-                    var result = converter.FromByte(bytes);
+                    var result = register.FromByte(bytes);
 
                     return (true, result);
                 }
@@ -117,9 +113,9 @@ public class ModbusService : IModbusService
                 {
                     var response = await master.ReadInputsAsync(modbusClient.ServerConfiguration.Id,
                         register.Address,
-                         converter.CountByte);
+                        register.CountByte);
                     var bytes = response.Reverse().SelectMany(BitConverter.GetBytes).ToArray();
-                    var result = converter.FromByte(bytes);
+                    var result = register.FromByte(bytes);
 
                     return (true, result);
                 }
